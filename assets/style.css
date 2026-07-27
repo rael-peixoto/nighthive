@@ -12,6 +12,16 @@
   box-sizing: border-box;
 }
 
+/* The [hidden] attribute drives language switching (lang.js toggles it on
+   every [data-lang] element) and must always win over any display: rule
+   below, no matter how specific -- otherwise a "hidden" language variant
+   can render anyway (this happened on index.html's hub-grid cards: their
+   `display: block` rule outranked the browser's own `[hidden] { display:
+   none }`, so both languages showed stacked). */
+[hidden] {
+  display: none !important;
+}
+
 html,
 body {
   margin: 0;
