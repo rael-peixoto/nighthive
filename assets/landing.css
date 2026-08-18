@@ -336,11 +336,27 @@ h1.hero-title {
   white-space: nowrap;
   position: relative;
 }
+/* Seamless loop requires two things, both of which were wrong before:
+   1. The track holds exactly TWO identical halves and animates to -50%.
+      Any `gap` on the track itself sits between those halves but is not
+      part of the 50%, so the loop drifts by half the gap each cycle and
+      tears open a visible hole. Spacing therefore lives INSIDE each half
+      (its own gap + trailing padding), and the track's gap stays 0.
+   2. Each half must be wider than the viewport, or the tail of the strip
+      runs out before the next half arrives and leaves dead space on the
+      right. Hence the phrase list is repeated several times per half. */
 .marquee-track {
   display: inline-flex;
-  gap: 42px;
-  animation: slide 34s linear infinite;
+  gap: 0;
+  animation: slide 42s linear infinite;
   will-change: transform;
+}
+.mq-half {
+  display: inline-flex;
+  align-items: center;
+  gap: 38px;
+  padding-right: 38px;
+  flex: 0 0 auto;
 }
 .marquee b {
   font-family: var(--display);
@@ -349,6 +365,7 @@ h1.hero-title {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text);
+  white-space: nowrap;
 }
 .marquee i {
   font-style: normal;
