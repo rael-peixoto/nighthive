@@ -1,0 +1,775 @@
+/* ==========================================================================
+   NightHive — landing + waitlist styles
+   --------------------------------------------------------------------------
+   Standalone on purpose: does NOT depend on style.css, whose .wrap caps
+   content at 720px (right for the legal/support pages, wrong for a
+   full-bleed landing page). Anything shared is duplicated deliberately
+   rather than coupling the two.
+
+   Display face is Unbounded (SIL Open Font License 1.1 — see
+   assets/fonts/OFL.txt), self-hosted rather than loaded from a font CDN so
+   the page has zero third-party requests and renders fast on mobile data.
+   Only the latin subset ships; it covers every Portuguese accent
+   (á ã ç é ê í ó õ ú all live in U+00C0–U+00FF).
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Unbounded';
+  src: url('fonts/unbounded-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unbounded';
+  src: url('fonts/unbounded-900.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Brand tokens match the app (mobile/src/theme/colors.ts) so the site and
+     the product read as one thing. --magenta-hot is a landing-only lift of
+     the brand magenta: #ce035f is correct in the app's UI, but on a large
+     dark canvas it needs more luminance to actually glow. */
+  --magenta: #ce035f;
+  --magenta-hot: #ff2d87;
+  --ink: #0b0e10;
+  --surface: #14181b;
+  --surface-raised: #1a1f24;
+  --border: #242a30;
+  --text: #ffffff;
+  --muted: #98a2ad;
+
+  --display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+  --body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --gutter: clamp(20px, 5vw, 64px);
+  --measure: 1200px;
+}
+
+* { box-sizing: border-box; }
+
+/* Drives language switching (lang.js toggles [hidden] on every [data-lang]
+   element) and must outrank any display: rule below. A `display: grid` on a
+   hidden language variant would otherwise render BOTH languages stacked --
+   this exact bug shipped once on index.html's old hub grid. */
+[hidden] { display: none !important; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--magenta); color: #fff; }
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 2px solid var(--magenta-hot);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+/* ============================ Navigation ============================ */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px var(--gutter);
+  background: rgba(11, 14, 16, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.nav.scrolled { border-bottom-color: var(--border); }
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+}
+.nav-brand img {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  object-fit: cover;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.nav-links a { transition: color 0.2s ease; }
+.nav-links a:hover { color: var(--text); }
+
+.nav-right { display: flex; align-items: center; gap: 14px; }
+
+/* Compact language switcher — inherits lang.js's [data-lang-switch] hooks. */
+.lang-pills { display: flex; gap: 4px; }
+.lang-pills button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.lang-pills button:hover { color: var(--text); border-color: var(--muted); }
+.lang-pills button.active {
+  background: var(--magenta);
+  border-color: var(--magenta);
+  color: #fff;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--magenta);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 26px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--body);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 6px 28px rgba(206, 3, 95, 0.32);
+}
+.btn:hover {
+  background: var(--magenta-hot);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 36px rgba(255, 45, 135, 0.42);
+}
+.btn:active { transform: translateY(0); }
+.btn.small { padding: 9px 18px; font-size: 13.5px; box-shadow: none; }
+.btn.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  box-shadow: none;
+  color: var(--text);
+}
+.btn.ghost:hover { background: var(--surface-raised); border-color: var(--muted); transform: none; }
+
+/* ============================== Hero ================================ */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 120px 0 80px;
+  overflow: hidden;
+}
+
+/* The canvas renders the "hive": drifting points (people) pulled toward
+   glowing nodes (parties), with a line flaring between two of them when
+   they meet — the product's actual mechanic as ambient motion, rather than
+   decorative particles. See hive.js. */
+#hive-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
+
+/* Vignette + floor fade so the canvas never competes with the headline and
+   dissolves cleanly into the next section. */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 70% 40%, transparent 0%, rgba(11, 14, 16, 0.55) 55%, var(--ink) 100%),
+    linear-gradient(to bottom, transparent 60%, var(--ink) 100%);
+}
+
+.hero-inner { position: relative; z-index: 2; width: 100%; }
+
+/* Sized in px, NOT ch. A `ch` max-width here resolves against this div's
+   inherited 16px body font (~150px wide), not the 104px headline inside it,
+   which crushed the whole hero into a narrow ribbon. Any ch-based measure
+   has to live on the element that actually carries the large font-size --
+   see .hero-title below. */
+.hero-copy { max-width: min(780px, 100%); }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--magenta-hot);
+  margin-bottom: 22px;
+}
+.eyebrow::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--magenta-hot);
+  box-shadow: 0 0 12px var(--magenta-hot);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.82); }
+}
+
+h1.hero-title {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(40px, 7.2vw, 92px);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  margin: 0;
+  /* Safe to use ch here: this element carries the large font-size, so the
+     measure resolves against the display type as intended. */
+  max-width: 11ch;
+  text-wrap: balance;
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--magenta-hot);
+  text-shadow: 0 0 40px rgba(255, 45, 135, 0.55);
+}
+
+.hero-sub {
+  margin: 26px 0 0;
+  font-size: clamp(16px, 2.1vw, 19px);
+  color: #cbd3da;
+  max-width: 46ch;
+  line-height: 1.55;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 38px;
+}
+
+.hero-note {
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.scroll-cue span {
+  width: 1px;
+  height: 42px;
+  background: linear-gradient(to bottom, var(--magenta-hot), transparent);
+  animation: cue 2.2s ease-in-out infinite;
+}
+@keyframes cue {
+  0%, 100% { opacity: 0.25; transform: scaleY(0.55); transform-origin: top; }
+  50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+}
+
+/* ============================ Marquee =============================== */
+
+.marquee {
+  border-block: 1px solid var(--border);
+  background: var(--surface);
+  padding: 15px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+.marquee-track {
+  display: inline-flex;
+  gap: 42px;
+  animation: slide 34s linear infinite;
+  will-change: transform;
+}
+.marquee b {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.marquee i {
+  font-style: normal;
+  color: var(--magenta);
+}
+@keyframes slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ============================ Sections ============================== */
+
+section { position: relative; }
+
+.band { padding: clamp(72px, 11vw, 132px) 0; }
+.band.tight { padding-block: clamp(56px, 8vw, 96px); }
+.band.alt { background: var(--surface); border-block: 1px solid var(--border); }
+
+.section-head { max-width: 700px; margin-bottom: 52px; }
+.section-head.center { margin-inline: auto; text-align: center; }
+
+.kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--magenta-hot);
+  margin-bottom: 14px;
+}
+
+h2 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(28px, 4.6vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.lede {
+  margin: 18px 0 0;
+  font-size: clamp(15.5px, 1.9vw, 18px);
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+.section-head.center .lede { margin-inline: auto; }
+
+/* -------- Problem statement: one oversized line, deliberately bare ---- */
+
+.statement {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(26px, 5.4vw, 58px);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  margin: 0;
+  max-width: 17ch;
+  text-wrap: balance;
+}
+.statement u {
+  text-decoration: none;
+  color: var(--magenta-hot);
+}
+.statement-note {
+  margin: 30px 0 0;
+  font-size: clamp(15px, 1.9vw, 18px);
+  color: var(--muted);
+  max-width: 44ch;
+  line-height: 1.6;
+}
+
+/* ---------------------- How it works: 3 steps ------------------------ */
+/* Numbered because this genuinely IS a sequence — you cannot match before
+   checking in. The numbers carry real information, they aren't decoration. */
+
+.steps {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  counter-reset: step;
+}
+.step {
+  position: relative;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 30px 26px 28px;
+  overflow: hidden;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+.step::before {
+  counter-increment: step;
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 40px;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--border);
+  transition: -webkit-text-stroke-color 0.3s ease;
+}
+.step:hover { border-color: rgba(206, 3, 95, 0.5); transform: translateY(-4px); }
+.step:hover::before { -webkit-text-stroke-color: var(--magenta); }
+.step h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 19px;
+  margin: 0 0 10px;
+  /* Clears the outlined numeral in the corner -- the longest PT title
+     ("Combine com quem está lá") wraps right up against it otherwise. */
+  padding-right: 64px;
+  letter-spacing: -0.01em;
+}
+.step p { margin: 0; color: var(--muted); font-size: 15px; }
+
+/* ------------------------- Contrast rows ----------------------------- */
+
+.compare {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+.compare-col {
+  border-radius: 20px;
+  padding: 28px 26px;
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+}
+.compare-col.them { opacity: 0.72; }
+.compare-col.us {
+  border-color: rgba(206, 3, 95, 0.45);
+  background: linear-gradient(160deg, rgba(206, 3, 95, 0.12), var(--surface-raised) 62%);
+}
+.compare-col h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  margin: 0 0 18px;
+  color: var(--muted);
+}
+.compare-col.us h3 { color: var(--magenta-hot); }
+.compare-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 13px; }
+.compare-col li {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  font-size: 15px;
+  color: #cbd3da;
+  line-height: 1.5;
+}
+.compare-col li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 9px;
+  background: var(--muted);
+}
+.compare-col.us li::before { background: var(--magenta-hot); box-shadow: 0 0 10px var(--magenta-hot); }
+
+/* --------------------------- Feature grid ---------------------------- */
+
+.features {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+.feature {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 26px 24px;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+.feature:hover { border-color: rgba(206, 3, 95, 0.45); transform: translateY(-3px); }
+.feature .ico {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: rgba(206, 3, 95, 0.14);
+  margin-bottom: 16px;
+}
+.feature .ico svg { width: 21px; height: 21px; stroke: var(--magenta-hot); fill: none; stroke-width: 1.9; }
+.feature h3 { font-size: 16px; font-weight: 700; margin: 0 0 7px; }
+.feature p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+
+/* ---------------------------- Plus / plans --------------------------- */
+
+.plans { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.plan {
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  padding: 32px 28px;
+}
+.plan.pro {
+  border-color: rgba(206, 3, 95, 0.5);
+  background: linear-gradient(165deg, rgba(206, 3, 95, 0.14), var(--surface-raised) 58%);
+  box-shadow: 0 18px 60px rgba(206, 3, 95, 0.14);
+}
+.plan-name {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+}
+.plan.pro .plan-name { color: var(--magenta-hot); }
+.plan-tag { font-size: 13.5px; color: var(--muted); margin: 0 0 22px; }
+.plan ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.plan li { display: flex; gap: 11px; align-items: flex-start; font-size: 15px; color: #cbd3da; line-height: 1.5; }
+.plan li svg { width: 17px; height: 17px; flex-shrink: 0; margin-top: 3px; stroke: var(--magenta-hot); fill: none; stroke-width: 2.4; }
+.plan.free li svg { stroke: var(--muted); }
+
+/* ---------------------------- Venue block ---------------------------- */
+
+.venue {
+  display: grid;
+  gap: 34px;
+  align-items: center;
+  grid-template-columns: 1fr;
+  background: linear-gradient(150deg, rgba(206, 3, 95, 0.13), var(--surface-raised) 55%);
+  border: 1px solid rgba(206, 3, 95, 0.32);
+  border-radius: 26px;
+  padding: clamp(30px, 5vw, 56px);
+}
+@media (min-width: 860px) { .venue { grid-template-columns: 1.35fr 1fr; } }
+.venue h2 { font-size: clamp(25px, 3.6vw, 38px); }
+
+/* ------------------------------ Final CTA ---------------------------- */
+
+.finale { text-align: center; position: relative; overflow: hidden; }
+.finale::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  width: min(880px, 130vw);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(206, 3, 95, 0.2) 0%, transparent 62%);
+  pointer-events: none;
+}
+.finale > * { position: relative; }
+.finale h2 { font-size: clamp(30px, 6vw, 62px); max-width: 15ch; margin-inline: auto; }
+
+/* ------------------------------- Footer ------------------------------ */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--ink);
+  padding: 56px 0 40px;
+}
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--border);
+}
+.footer-links { display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: 14px; }
+.footer-links a { color: var(--muted); transition: color 0.2s ease; }
+.footer-links a:hover { color: var(--text); }
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.lang-fallback-note {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+
+/* ===================== Waitlist page (waitlist.html) ================= */
+
+.wl-page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Same vignette treatment as the hero, so the canvas never fights the form
+   for legibility. Sits above the canvas (z 0) and below the content (z 2). */
+.wl-page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(105% 75% at 50% 45%, transparent 0%, rgba(11, 14, 16, 0.62) 52%, var(--ink) 100%),
+    linear-gradient(to bottom, rgba(11, 14, 16, 0.5) 0%, transparent 28%);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.wl-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 0 70px;
+  position: relative;
+  z-index: 2;
+}
+.wl-card { max-width: 560px; width: 100%; text-align: center; }
+.wl-card h1 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(32px, 6.4vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+  margin: 0;
+  text-wrap: balance;
+}
+.wl-card h1 em { font-style: normal; color: var(--magenta-hot); text-shadow: 0 0 38px rgba(255, 45, 135, 0.5); }
+.wl-card .lede { margin: 20px auto 0; }
+
+.wl-form { display: flex; flex-wrap: wrap; gap: 11px; margin: 34px 0 0; justify-content: center; }
+.wl-form input {
+  flex: 1 1 260px;
+  min-width: 0;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 15px 22px;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15.5px;
+  transition: border-color 0.2s ease;
+}
+.wl-form input::placeholder { color: #6b747e; }
+.wl-form input:focus { outline: none; border-color: var(--magenta); }
+.wl-form input:disabled { opacity: 0.55; }
+.wl-form .btn { flex: 0 0 auto; }
+.wl-form .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.wl-msg {
+  margin: 18px 0 0;
+  font-size: 14.5px;
+  min-height: 22px;
+  line-height: 1.5;
+}
+.wl-msg.ok { color: #34d17f; }
+.wl-msg.err { color: #ff6b6b; }
+
+.wl-fine { margin: 26px 0 0; font-size: 12.5px; color: #6b747e; line-height: 1.5; }
+.wl-back { margin-top: 30px; font-size: 14px; }
+.wl-back a { color: var(--muted); }
+.wl-back a:hover { color: var(--text); }
+
+/* ============================= Motion ================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* Honour the OS setting: kill every ambient/scroll animation, and render
+   reveal content in its final state so nothing is stuck invisible. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .marquee-track { animation: none; }
+}
+
+/* ============================ Responsive ============================= */
+
+@media (max-width: 860px) {
+  .nav-links { display: none; }
+  .hero { min-height: auto; padding: 118px 0 76px; }
+  .hero-copy { max-width: 100%; }
+  .scroll-cue { display: none; }
+}
+
+@media (max-width: 520px) {
+  .nav { padding-inline: 18px; }
+  .nav-brand span { display: none; }
+  .lang-pills button { padding: 5px 9px; font-size: 11.5px; }
+  .btn { width: 100%; }
+  .hero-actions .btn { width: 100%; }
+  .wl-form .btn { width: 100%; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}

@@ -3,65 +3,491 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NightHive</title>
-<meta name="description" content="NightHive — matching gated to real-world party attendance.">
+<title>NightHive — A noite começa antes de você chegar</title>
+<meta name="description" content="O NightHive mostra quem vai estar na mesma festa que você e libera match e conversa só entre quem confirmou presença. Festas reais, conexões reais.">
+<meta name="theme-color" content="#0b0e10">
 <link rel="icon" href="assets/img/favicon.png">
-<link rel="stylesheet" href="assets/style.css">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="NightHive — A noite começa antes de você chegar">
+<meta property="og:description" content="Descubra as festas da sua cidade, veja quem vai e combine com quem vai estar lá. Match só entre quem confirmou presença na mesma festa.">
+<meta property="og:image" content="assets/img/logo.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preload" href="assets/fonts/unbounded-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/landing.css">
 </head>
 <body>
-<div class="wrap">
-  <header class="site-header">
-    <a class="brand" href="index.html"><img src="assets/img/logo.jpg" alt=""> NightHive</a>
-  </header>
 
-  <div class="lang-switch" role="group" aria-label="Language">
-    <button type="button" data-lang-switch="pt">Português</button>
-    <button type="button" data-lang-switch="en">English</button>
-    <button type="button" data-lang-switch="es">Español</button>
-    <button type="button" data-lang-switch="de">Deutsch</button>
-    <button type="button" data-lang-switch="it">Italiano</button>
+<!-- ============================== NAV ============================== -->
+<nav class="nav">
+  <a class="nav-brand" href="index.html">
+    <img src="assets/img/logo.jpg" alt="">
+    <span>NIGHTHIVE</span>
+  </a>
+
+  <div class="nav-links">
+    <a href="#como-funciona" data-lang="pt">Como funciona</a>
+    <a href="#como-funciona" data-lang="en" hidden>How it works</a>
+    <a href="#no-app" data-lang="pt">No app</a>
+    <a href="#no-app" data-lang="en" hidden>In the app</a>
+    <a href="#planos" data-lang="pt">Planos</a>
+    <a href="#planos" data-lang="en" hidden>Plans</a>
+    <a href="faq.html" data-lang="pt">Ajuda</a>
+    <a href="faq.html" data-lang="en" hidden>Help</a>
   </div>
-  <p class="lang-fallback-note" id="lang-fallback-note" hidden></p>
 
-  <main>
+  <div class="nav-right">
+    <div class="lang-pills" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang-switch="pt">PT</button>
+      <button type="button" data-lang-switch="en">EN</button>
+    </div>
+    <a class="btn small" href="waitlist.html">
+      <span data-lang="pt">Entrar na lista</span>
+      <span data-lang="en" hidden>Join waitlist</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ============================== HERO ============================== -->
+<header class="hero">
+  <!-- Ambient "hive": parties as glowing nodes, people drifting toward them,
+       a flare when two at the same party connect. See assets/hive.js. -->
+  <canvas id="hive-canvas" aria-hidden="true"></canvas>
+
+  <div class="hero-inner shell">
+    <div class="hero-copy">
+      <div data-lang="pt">
+        <p class="eyebrow">Festas reais · Gente real</p>
+        <h1 class="hero-title">A noite começa <em>antes</em> de você chegar.</h1>
+        <p class="hero-sub">
+          O NightHive mostra quem vai estar na mesma festa que você — e deixa
+          vocês se conectarem antes, durante e depois da noite.
+        </p>
+      </div>
+      <div data-lang="en" hidden>
+        <p class="eyebrow">Real parties · Real people</p>
+        <h1 class="hero-title">The night starts <em>before</em> you arrive.</h1>
+        <p class="hero-sub">
+          NightHive shows you who's going to the same party as you — and lets
+          you connect before, during and after the night.
+        </p>
+      </div>
+
+      <div class="hero-actions">
+        <a class="btn" href="waitlist.html">
+          <span data-lang="pt">Entrar na lista de espera</span>
+          <span data-lang="en" hidden>Join the waitlist</span>
+        </a>
+        <a class="btn ghost" href="#como-funciona">
+          <span data-lang="pt">Como funciona</span>
+          <span data-lang="en" hidden>How it works</span>
+        </a>
+      </div>
+
+      <p class="hero-note" data-lang="pt">Grátis para usar. Chegando primeiro no Brasil.</p>
+      <p class="hero-note" data-lang="en" hidden>Free to use. Launching in Brazil first.</p>
+    </div>
+  </div>
+
+  <div class="scroll-cue" aria-hidden="true">
+    <span></span>
+  </div>
+</header>
+
+<!-- ============================ MARQUEE ============================ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" data-lang="pt">
+    <b>Festa <i>·</i> Match <i>·</i> Conversa <i>·</i> Amizade <i>·</i> Pista <i>·</i> Encontro <i>·</i> Rolê <i>·</i> Noite <i>·</i></b>
+    <b>Festa <i>·</i> Match <i>·</i> Conversa <i>·</i> Amizade <i>·</i> Pista <i>·</i> Encontro <i>·</i> Rolê <i>·</i> Noite <i>·</i></b>
+  </div>
+  <div class="marquee-track" data-lang="en" hidden>
+    <b>Party <i>·</i> Match <i>·</i> Chat <i>·</i> Friends <i>·</i> Dance floor <i>·</i> Meet <i>·</i> Night out <i>·</i></b>
+    <b>Party <i>·</i> Match <i>·</i> Chat <i>·</i> Friends <i>·</i> Dance floor <i>·</i> Meet <i>·</i> Night out <i>·</i></b>
+  </div>
+</div>
+
+<!-- ============================ PROBLEM ============================ -->
+<section class="band">
+  <div class="shell reveal">
     <div data-lang="pt">
-      <h1>NightHive</h1>
-      <p class="subtitle">Festas de verdade, conexões de verdade.</p>
+      <p class="kicker">O problema</p>
+      <p class="statement">Duzentas pessoas na mesma pista. Você foi embora sem <u>conhecer nenhuma</u>.</p>
+      <p class="statement-note">
+        Não é timidez. É que ninguém sabe quem é quem, quem está a fim de
+        conversar, ou quem já foi embora. A noite acaba antes de você descobrir.
+      </p>
     </div>
     <div data-lang="en" hidden>
-      <h1>NightHive</h1>
-      <p class="subtitle">Real parties, real connections.</p>
+      <p class="kicker">The problem</p>
+      <p class="statement">Two hundred people on the same dance floor. You went home without <u>meeting one</u>.</p>
+      <p class="statement-note">
+        It isn't shyness. Nobody knows who's who, who's open to talking, or
+        who already left. The night ends before you find out.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================== HOW IT WORKS ========================== -->
+<section class="band alt" id="como-funciona">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div data-lang="pt">
+        <p class="kicker">Como funciona</p>
+        <h2>Do feed até a pista, em três passos.</h2>
+        <p class="lede">
+          Tudo gira em torno de uma regra: você só combina com quem confirmou
+          presença na mesma festa que você.
+        </p>
+      </div>
+      <div data-lang="en" hidden>
+        <p class="kicker">How it works</p>
+        <h2>From the feed to the dance floor, in three steps.</h2>
+        <p class="lede">
+          Everything turns on one rule: you only match with people who
+          confirmed they're going to the same party as you.
+        </p>
+      </div>
     </div>
 
-    <nav class="hub-grid">
-      <a class="card" href="about.html">
-        <span class="hub-title" data-lang="pt">Sobre a NightHive</span><span class="hub-title" data-lang="en" hidden>About NightHive</span>
-        <span class="hub-desc" data-lang="pt">O que é a NightHive e como funciona.</span><span class="hub-desc" data-lang="en" hidden>What NightHive is and how it works.</span>
-      </a>
-      <a class="card" href="faq.html">
-        <span class="hub-title" data-lang="pt">Central de Ajuda</span><span class="hub-title" data-lang="en" hidden>Help Center</span>
-        <span class="hub-desc" data-lang="pt">Perguntas frequentes e suporte.</span><span class="hub-desc" data-lang="en" hidden>Frequently asked questions and support.</span>
-      </a>
-      <a class="card" href="feedback.html">
-        <span class="hub-title" data-lang="pt">Feedback e Sugestões</span><span class="hub-title" data-lang="en" hidden>Feedback & Suggestions</span>
-        <span class="hub-desc" data-lang="pt">Conte pra gente o que achou.</span><span class="hub-desc" data-lang="en" hidden>Tell us what you think.</span>
-      </a>
-      <a class="card" href="terms.html">
-        <span class="hub-title" data-lang="pt">Termos de Uso</span><span class="hub-title" data-lang="en" hidden>Terms of Use</span>
-        <span class="hub-desc" data-lang="pt">As regras de uso do aplicativo.</span><span class="hub-desc" data-lang="en" hidden>The rules for using the app.</span>
-      </a>
-      <a class="card" href="privacy.html">
-        <span class="hub-title" data-lang="pt">Política de Privacidade</span><span class="hub-title" data-lang="en" hidden>Privacy Policy</span>
-        <span class="hub-desc" data-lang="pt">Como cuidamos dos seus dados.</span><span class="hub-desc" data-lang="en" hidden>How we handle your data.</span>
-      </a>
-    </nav>
-  </main>
+    <div class="steps reveal">
+      <article class="step">
+        <div data-lang="pt">
+          <h3>Escolha a festa</h3>
+          <p>Veja o que vai rolar na sua cidade hoje, no fim de semana ou mês que vem — com line-up, local, data e quem já confirmou.</p>
+        </div>
+        <div data-lang="en" hidden>
+          <h3>Pick the party</h3>
+          <p>See what's on in your city tonight, this weekend or next month — line-up, venue, date, and who's already going.</p>
+        </div>
+      </article>
 
-  <footer class="site-footer">
-    <div data-lang="pt">© 2026 NightHive. Todos os direitos reservados.</div>
-    <div data-lang="en" hidden>© 2026 NightHive. All rights reserved.</div>
-  </footer>
-</div>
+      <article class="step">
+        <div data-lang="pt">
+          <h3>Faça check-in</h3>
+          <p>Confirme presença e entre na lista de quem vai. É o check-in que libera o resto — sem ele, ninguém aparece pra você.</p>
+        </div>
+        <div data-lang="en" hidden>
+          <h3>Check in</h3>
+          <p>Confirm you're going and join the guest list. Checking in is what unlocks everything else — without it, nobody shows up for you.</p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div data-lang="pt">
+          <h3>Combine com quem está lá</h3>
+          <p>Curta, dê match e converse — só com gente que vai na mesma festa. Deu match, abre a conversa. E vocês já sabem onde vão se ver.</p>
+        </div>
+        <div data-lang="en" hidden>
+          <h3>Match with who's there</h3>
+          <p>Like, match and chat — only with people going to the same party. Match opens the chat. And you already know where you'll meet.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========================== DIFFERENTIATOR ======================== -->
+<section class="band">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div data-lang="pt">
+        <p class="kicker">Por que é diferente</p>
+        <h2>Não é mais um app de namoro.</h2>
+        <p class="lede">
+          Apps de encontro te dão uma cidade inteira de estranhos e torcem pra
+          dar certo. O NightHive parte do lugar onde vocês dois já vão estar.
+        </p>
+      </div>
+      <div data-lang="en" hidden>
+        <p class="kicker">Why it's different</p>
+        <h2>This isn't another dating app.</h2>
+        <p class="lede">
+          Dating apps hand you a whole city of strangers and hope for the best.
+          NightHive starts from the place you're both already going to be.
+        </p>
+      </div>
+    </div>
+
+    <div class="compare reveal">
+      <div class="compare-col them">
+        <div data-lang="pt">
+          <h3>Nos apps de sempre</h3>
+          <ul>
+            <li>Scroll infinito de estranhos da cidade inteira</li>
+            <li>Conversa que morre antes de virar encontro</li>
+            <li>Você nunca sabe se a pessoa realmente sai de casa</li>
+            <li>Marcar de se ver é todo um projeto</li>
+          </ul>
+        </div>
+        <div data-lang="en" hidden>
+          <h3>On the usual apps</h3>
+          <ul>
+            <li>An endless scroll of strangers from the whole city</li>
+            <li>Chats that die before they become a date</li>
+            <li>You never know if the person actually goes out</li>
+            <li>Meeting up is a whole negotiation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="compare-col us">
+        <div data-lang="pt">
+          <h3>No NightHive</h3>
+          <ul>
+            <li>Só quem vai na mesma festa que você</li>
+            <li>Vocês já têm assunto: a festa é hoje</li>
+            <li>Todo mundo ali já decidiu sair de casa</li>
+            <li>O encontro já tem hora, lugar e trilha sonora</li>
+          </ul>
+        </div>
+        <div data-lang="en" hidden>
+          <h3>On NightHive</h3>
+          <ul>
+            <li>Only people going to the same party as you</li>
+            <li>You already have something to talk about: tonight</li>
+            <li>Everyone there already decided to go out</li>
+            <li>The date already has a time, a place and a soundtrack</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= FEATURES =========================== -->
+<section class="band alt" id="no-app">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div data-lang="pt">
+        <p class="kicker">No app</p>
+        <h2>Feito para a noite inteira.</h2>
+        <p class="lede">Antes de sair, na fila, na pista e no dia seguinte.</p>
+      </div>
+      <div data-lang="en" hidden>
+        <p class="kicker">In the app</p>
+        <h2>Built for the whole night.</h2>
+        <p class="lede">Before you leave, in the queue, on the floor, and the morning after.</p>
+      </div>
+    </div>
+
+    <div class="features reveal">
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
+        <div data-lang="pt"><h3>Match na festa</h3><p>Curta quem vai na mesma festa. Deu match dos dois lados, abre a conversa.</p></div>
+        <div data-lang="en" hidden><h3>Party matching</h3><p>Like people going to your party. Match both ways and the chat opens.</p></div>
+      </div>
+
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4.1-1L3 20l1.2-4.6A8.4 8.4 0 1 1 21 11.5z"/></svg></div>
+        <div data-lang="pt"><h3>Conversa de verdade</h3><p>Chat em tempo real, com fotos, reações e resposta a mensagem.</p></div>
+        <div data-lang="en" hidden><h3>Real conversation</h3><p>Live chat with photos, reactions and replies.</p></div>
+      </div>
+
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg></div>
+        <div data-lang="pt"><h3>Amigos por QR</h3><p>Conheceu alguém na hora? Escaneia o QR e já vira amizade no app.</p></div>
+        <div data-lang="en" hidden><h3>Friends by QR</h3><p>Met someone right there? Scan their QR and you're connected.</p></div>
+      </div>
+
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9"/></svg></div>
+        <div data-lang="pt"><h3>Quem vai</h3><p>Veja a lista de confirmados antes de decidir qual festa vale a noite.</p></div>
+        <div data-lang="en" hidden><h3>Who's going</h3><p>See the confirmed list before deciding which party is worth your night.</p></div>
+      </div>
+
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div data-lang="pt"><h3>Festas da sua cidade</h3><p>Line-up, local, data e produtor. Tudo antes de você decidir o rolê.</p></div>
+        <div data-lang="en" hidden><h3>Parties in your city</h3><p>Line-up, venue, date and promoter — all before you pick your night.</p></div>
+      </div>
+
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div data-lang="pt"><h3>Você no controle</h3><p>Bloqueie, denuncie, esconda seu perfil do match ou saia quando quiser.</p></div>
+        <div data-lang="en" hidden><h3>You're in control</h3><p>Block, report, hide your profile from matching, or leave whenever.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== PLANS ============================= -->
+<section class="band" id="planos">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div data-lang="pt">
+        <p class="kicker">Planos</p>
+        <h2>Grátis de verdade. Plus quando quiser mais.</h2>
+        <p class="lede">
+          O app inteiro funciona de graça: achar festa, fazer check-in, dar
+          match e conversar. O Plus acelera quem quer ir mais rápido.
+        </p>
+      </div>
+      <div data-lang="en" hidden>
+        <p class="kicker">Plans</p>
+        <h2>Genuinely free. Plus when you want more.</h2>
+        <p class="lede">
+          The whole app works for free: find parties, check in, match and
+          chat. Plus is for people who want to move faster.
+        </p>
+      </div>
+    </div>
+
+    <div class="plans reveal">
+      <div class="plan free">
+        <div data-lang="pt">
+          <p class="plan-name">Grátis</p>
+          <p class="plan-tag">Tudo que você precisa para a noite.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Todas as festas e check-ins</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>25 curtidas por dia</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>3 super curtidas por dia</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Match e conversa ilimitados</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Amigos e QR code</li>
+          </ul>
+        </div>
+        <div data-lang="en" hidden>
+          <p class="plan-name">Free</p>
+          <p class="plan-tag">Everything you need for the night.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Every party and check-in</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>25 likes a day</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>3 super likes a day</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Unlimited matches and chat</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Friends and QR code</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="plan pro">
+        <div data-lang="pt">
+          <p class="plan-name">NightHive+</p>
+          <p class="plan-tag">Assinatura mensal ou anual.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Veja quem curtiu você e dê match na hora</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Curtidas e super curtidas ilimitadas</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Desfazer ilimitado, inclusive quem você passou</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Proporção de gêneros de cada festa</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Cancele quando quiser</li>
+          </ul>
+        </div>
+        <div data-lang="en" hidden>
+          <p class="plan-name">NightHive+</p>
+          <p class="plan-tag">Monthly or annual subscription.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>See who liked you and match instantly</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Unlimited likes and super likes</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Unlimited undo, including people you passed</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Gender ratio for every party</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Cancel anytime</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== VENUES ============================ -->
+<section class="band tight">
+  <div class="shell">
+    <div class="venue reveal">
+      <div>
+        <div data-lang="pt">
+          <p class="kicker">Para produtores e casas</p>
+          <h2>Organiza festas?</h2>
+          <p class="lede">
+            Coloque seu evento na frente de quem realmente sai de casa. Sua
+            festa aparece com line-up, local, data e a lista de quem já
+            confirmou — e o app leva gente que já decidiu ir.
+          </p>
+        </div>
+        <div data-lang="en" hidden>
+          <p class="kicker">For promoters and venues</p>
+          <h2>Run parties?</h2>
+          <p class="lede">
+            Put your event in front of people who actually go out. Your party
+            shows up with line-up, venue, date and the list of who's already
+            confirmed — and the app brings people who've already decided.
+          </p>
+        </div>
+      </div>
+      <div>
+        <a class="btn" href="feedback.html">
+          <span data-lang="pt">Fale com a gente</span>
+          <span data-lang="en" hidden>Get in touch</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== FINALE ============================ -->
+<section class="band finale">
+  <div class="shell reveal">
+    <div data-lang="pt">
+      <h2>A próxima noite pode ser diferente.</h2>
+      <p class="lede" style="margin-inline:auto">
+        Entre na lista de espera e a gente avisa assim que o NightHive chegar
+        na sua cidade.
+      </p>
+    </div>
+    <div data-lang="en" hidden>
+      <h2>The next night can be different.</h2>
+      <p class="lede" style="margin-inline:auto">
+        Join the waitlist and we'll tell you the moment NightHive lands in
+        your city.
+      </p>
+    </div>
+    <p style="margin-top:34px">
+      <a class="btn" href="waitlist.html">
+        <span data-lang="pt">Entrar na lista de espera</span>
+        <span data-lang="en" hidden>Join the waitlist</span>
+      </a>
+    </p>
+  </div>
+</section>
+
+<!-- ============================== FOOTER ============================ -->
+<footer class="site-footer">
+  <div class="shell">
+    <p class="lang-fallback-note" id="lang-fallback-note" hidden></p>
+
+    <div class="footer-top">
+      <a class="nav-brand" href="index.html">
+        <img src="assets/img/logo.jpg" alt="">
+        <span>NIGHTHIVE</span>
+      </a>
+
+      <div class="footer-links">
+        <a href="about.html" data-lang="pt">Sobre</a>
+        <a href="about.html" data-lang="en" hidden>About</a>
+        <a href="faq.html" data-lang="pt">Ajuda e FAQ</a>
+        <a href="faq.html" data-lang="en" hidden>Help &amp; FAQ</a>
+        <a href="feedback.html" data-lang="pt">Feedback</a>
+        <a href="feedback.html" data-lang="en" hidden>Feedback</a>
+        <a href="terms.html" data-lang="pt">Termos de Uso</a>
+        <a href="terms.html" data-lang="en" hidden>Terms of Use</a>
+        <a href="privacy.html" data-lang="pt">Privacidade</a>
+        <a href="privacy.html" data-lang="en" hidden>Privacy</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>
+        <span data-lang="pt">© 2026 NightHive. Todos os direitos reservados.</span>
+        <span data-lang="en" hidden>© 2026 NightHive. All rights reserved.</span>
+      </div>
+      <div class="lang-pills" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang-switch="pt">Português</button>
+        <button type="button" data-lang-switch="en">English</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
 <script src="assets/lang.js"></script>
+<script src="assets/hive.js"></script>
+<script src="assets/site.js"></script>
 </body>
 </html>

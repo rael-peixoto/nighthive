@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NightHive — Lista de espera</title>
+<meta name="description" content="Entre na lista de espera do NightHive e seja avisado quando o app chegar na sua cidade.">
+<meta name="theme-color" content="#0b0e10">
+<link rel="icon" href="assets/img/favicon.png">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="NightHive — Lista de espera">
+<meta property="og:description" content="Seja avisado quando o NightHive chegar na sua cidade.">
+<meta property="og:image" content="assets/img/logo.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preload" href="assets/fonts/unbounded-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/landing.css">
+</head>
+<body>
+
+<div class="wl-page">
+  <nav class="nav">
+    <a class="nav-brand" href="index.html">
+      <img src="assets/img/logo.jpg" alt="">
+      <span>NIGHTHIVE</span>
+    </a>
+    <div class="nav-right">
+      <div class="lang-pills" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang-switch="pt">PT</button>
+        <button type="button" data-lang-switch="en">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Same ambient hive as the landing hero, so the two pages read as one
+       site rather than a form bolted onto the side of it. -->
+  <canvas id="hive-canvas" aria-hidden="true"></canvas>
+
+  <main class="wl-main">
+    <div class="shell">
+      <div class="wl-card">
+        <p class="lang-fallback-note" id="lang-fallback-note" hidden></p>
+
+        <div data-lang="pt">
+          <p class="eyebrow">Lista de espera</p>
+          <h1>Seja o <em>primeiro</em> a saber.</h1>
+          <p class="lede">
+            O NightHive está chegando. Deixe seu e-mail e a gente avisa assim
+            que abrir na sua cidade — sem spam, só o aviso que importa.
+          </p>
+        </div>
+        <div data-lang="en" hidden>
+          <p class="eyebrow">Waitlist</p>
+          <h1>Be the <em>first</em> to know.</h1>
+          <p class="lede">
+            NightHive is on its way. Leave your email and we'll tell you the
+            moment it opens in your city — no spam, just the one that matters.
+          </p>
+        </div>
+
+        <form class="wl-form" id="wl-form" novalidate>
+          <label for="wl-email" class="sr-only" data-lang="pt">E-mail</label>
+          <label for="wl-email" class="sr-only" data-lang="en" hidden>Email</label>
+
+          <input
+            type="email"
+            id="wl-email"
+            name="email"
+            autocomplete="email"
+            inputmode="email"
+            spellcheck="false"
+            required
+            placeholder="seu@email.com"
+          >
+          <button type="submit" class="btn" id="wl-submit">
+            <span data-lang="pt">Quero entrar</span>
+            <span data-lang="en" hidden>Join</span>
+          </button>
+        </form>
+
+        <p class="wl-msg" id="wl-msg" role="status" aria-live="polite"></p>
+
+        <p class="wl-fine" data-lang="pt">
+          Ao entrar na lista você concorda em receber e-mails do NightHive sobre
+          o lançamento. Dá pra sair quando quiser. Veja a
+          <a href="privacy.html">Política de Privacidade</a>.
+        </p>
+        <p class="wl-fine" data-lang="en" hidden>
+          By joining you agree to receive emails from NightHive about the
+          launch. You can opt out at any time. Read the
+          <a href="privacy.html">Privacy Policy</a>.
+        </p>
+
+        <p class="wl-back">
+          <a href="index.html" data-lang="pt">← Voltar para o site</a>
+          <a href="index.html" data-lang="en" hidden>← Back to the site</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" style="background:transparent;position:relative;z-index:2">
+    <div class="shell">
+      <div class="footer-bottom" style="border:0;padding-top:0">
+        <div>
+          <span data-lang="pt">© 2026 NightHive.</span>
+          <span data-lang="en" hidden>© 2026 NightHive.</span>
+        </div>
+        <div class="footer-links">
+          <a href="terms.html" data-lang="pt">Termos</a>
+          <a href="terms.html" data-lang="en" hidden>Terms</a>
+          <a href="privacy.html" data-lang="pt">Privacidade</a>
+          <a href="privacy.html" data-lang="en" hidden>Privacy</a>
+          <a href="faq.html" data-lang="pt">Ajuda</a>
+          <a href="faq.html" data-lang="en" hidden>Help</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="assets/lang.js"></script>
+<script src="assets/hive.js"></script>
+<script src="assets/waitlist.js"></script>
+</body>
+</html>
